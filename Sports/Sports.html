@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+#navbar{
+        background-color: aqua;  
+        display: flex;
+    }
+    #search{
+        margin-top: 30px;
+        margin-left: 700px;
+        font-size: 20px;
+        border-radius: 5px;
+    }
+    h1{
+        margin: 10%;
+        width: 200px;
+    }
+   button{
+       font-size: 20px;
+       border-radius: 5px;
+       color: white;
+       background-color: black;
+   }
+
+    #Showdata{
+        margin:auto;
+        display: grid;
+        grid-template-columns: repeat(5,25%);
+        background-color: rgb(0, 5, 73);
+    
+    }
+
+    #Showdata >div{
+        background-color: rgb(255, 217, 0);
+        height: 200px;
+        margin: 20px;
+        border: 1px solid black;
+        padding-bottom: 5px;
+        padding-top:5px;
+        padding-left:5px;
+        border-radius: 5px;
+    }
+        
+</style>
+<body>
+
+    <div id="navbar">
+        <div><h1>Sports App</h1></div>
+        <div class="sclass">
+            <input type="text" id="search" placeholder="Search Here">
+            <button onclick="searchdata()">search</button>
+        </div>
+    </div>
+    <div id="Showdata">
+
+    </div>
+    
+</body>
+</html>
+<script>
+async function Sports(){
+    
+    let res=await fetch("https://api.npoint.io/20c1afef1661881ddc9c")
+    let data=await res.json()
+    console.log(data);
+    Showdata(data.playerList)
+}
+Sports()
+
+var parent=document.getElementById("Showdata");
+function Showdata(data)
+{
+  data.forEach((el)=>
+  {
+      //console.log(el.Id);
+      let parentdiv=document.createElement("div");
+      let imagediv=document.createElement("div");
+      let datadiv=document.createElement("div");
+      let img=document.createElement("img");
+      //img.src="./"
+     let name=document.createElement("p")
+     name.innerText=el.PFName;
+     name.style.fontWeight="900";
+
+     let skill=document.createElement("p")
+     skill.innerText=el.SkillDesc;
+     skill.style.fontWeight="900"
+
+
+        //imagediv.append(img)
+        datadiv.append(name,skill);
+        parentdiv.append(imagediv,datadiv)
+
+        parent.append(parentdiv)
+  });
+
+
+  async function searchdata(){
+    let query=document.getElementById("search").value;
+
+    let res=await fetch(`https://api.npoint.io?q=${query}&from=2021-10-18&sortBy=popularity&apiKey=20c1afef1661881ddc9c`)
+    
+    let data=await res.json()
+    console.log(data)
+    showdata(data)
+}
+}
+</script>
